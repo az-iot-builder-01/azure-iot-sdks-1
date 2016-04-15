@@ -97,13 +97,21 @@
         }
 
 
-        static String getProperty(String property)
+        static String GetProperty(String property)
         {
             Task<Device> getDeviceTask = _rm.GetDeviceAsync(_deviceId);
             getDeviceTask.Wait();
 
             Device device = getDeviceTask.Result;
-            return device.SystemProperties[property].Value.ToString();
+
+            if (device.SystemProperties.ContainsKey(property))
+            {
+                var value = device.SystemProperties[property].Value.ToString();
+                return value;
+            }
+
+            Console.WriteLine("{0} not found in SystemProperties", property);
+            return String.Empty;
         }
 
 
@@ -192,18 +200,26 @@
 
                 else if (eArgs.Data.StartsWith("Observe Update"))
                 {
-                    Console.WriteLine(eArgs.Data);
                     string[] data = eArgs.Data.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    string Uri = data[1].Substring(7, data[1].Length - 9);
 
-                    string uRI = data[1].Substring(7, data[0].Length - 1);
-                    TestCase aCase = _ObserveTestCases[uRI];
-                    if (aCase != null)
+                    if (_ObserveTestCases.ContainsKey(Uri))
                     {
-                        int size = Int32.Parse(data[2]);
-                        aCase.ExpectedValue = data[3].Substring(0, size);
+                        TestCase aCase = _ObserveTestCases[Uri];
+                        if (aCase != null)
+                        {
+                            int size = Int32.Parse(data[2]);
+                            aCase.ExpectedValue = data[3].Substring(0, size);
 
-                        Thread.Sleep(2000);
-                        aCase.RecordedValue = ReadPropertyThroughService(_ObserveTestCases[uRI].Name);
+                            var checkServiceValue = new SysTimer(6000);
+                            checkServiceValue.Elapsed += (sender, e) =>
+                            {
+                                aCase.RecordedValue = GetProperty(aCase.Name);
+                            };
+
+                            checkServiceValue.AutoReset = false;
+                            checkServiceValue.Start();
+                        }
                     }
                 }
             }
@@ -364,30 +380,50 @@
             String connectionString = Register();
             var client = DmClient.Start(args[0], connectionString);
 
-            // the 'read' test cases.
-            var oneCase = new TestCase(SystemPropertyNames.FirmwareVersion, TestCase.TestType.Read);
-            _ReadTestCases.Add("Device_FirmwareVersion", oneCase);
+            //// the 'read' test cases.
+            //var oneCase = new TestCase(SystemPropertyNames.FirmwareVersion, TestCase.TestType.Read);
+            //_ReadTestCases.Add("Device_FirmwareVersion", oneCase);
 
-            // the 'write' test cases
-            oneCase = new TestCase(SystemPropertyNames.Timezone, TestCase.TestType.Write);
-            oneCase.ExpectedValue = "-10:00"; /* US/Hawaii timezone */
-            _WriteTestCases.Add("Device_Timezone", oneCase);
+            //// the 'write' test cases
+            //oneCase = new TestCase(SystemPropertyNames.Timezone, TestCase.TestType.Write);
+            //oneCase.ExpectedValue = "-10:00"; /* US/Hawaii timezone */
+            //_WriteTestCases.Add("Device_Timezone", oneCase);
 
-            // the 'execute' test cases
-            oneCase = new TestCase("Device_FactoryReset", TestCase.TestType.Execute);
-            _ExecuteTestCases.Add("Device_FactoryReset", oneCase);
-            oneCase = new TestCase("Device_Reboot", TestCase.TestType.Execute);
-            _ExecuteTestCases.Add("Device_Reboot", oneCase);
-            oneCase = new TestCase("FirmwareUpdate_Update", TestCase.TestType.Execute);
-            _ExecuteTestCases.Add("FirmwareUpdate_Update", oneCase);
+            //// the 'execute' test cases
+            //oneCase = new TestCase("Device_FactoryReset", TestCase.TestType.Execute);
+            //_ExecuteTestCases.Add("Device_FactoryReset", oneCase);
+            //oneCase = new TestCase("Device_Reboot", TestCase.TestType.Execute);
+            //_ExecuteTestCases.Add("Device_Reboot", oneCase);
+            //oneCase = new TestCase("FirmwareUpdate_Update", TestCase.TestType.Execute);
+            //_ExecuteTestCases.Add("FirmwareUpdate_Update", oneCase);
 
             // the 'observe' test cases
             /**
              * Note that we are using a URI - This is a side effect of wakaama messages on stderr...
              *    Let's figure out a more generic way of identifying the URI!
              */
-            oneCase = new TestCase(SystemPropertyNames.BatteryLevel, TestCase.TestType.Observe);
-            _ObserveTestCases.Add("/3/0/9", oneCase);
+            _ObserveTestCases.Add("/1/0/1", new TestCase(SystemPropertyNames.RegistrationLifetime, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/1/0/2", new TestCase(SystemPropertyNames.DefaultMinPeriod, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/1/0/3", new TestCase(SystemPropertyNames.DefaultMaxPeriod, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/0", new TestCase(SystemPropertyNames.Manufacturer, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/1", new TestCase(SystemPropertyNames.ModelNumber, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/2", new TestCase(SystemPropertyNames.SerialNumber, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/3", new TestCase(SystemPropertyNames.FirmwareVersion, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/9", new TestCase(SystemPropertyNames.BatteryLevel, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/10", new TestCase(SystemPropertyNames.MemoryFree, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/13", new TestCase(SystemPropertyNames.CurrentTime, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/14", new TestCase(SystemPropertyNames.UtcOffset, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/15", new TestCase(SystemPropertyNames.Timezone, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/17", new TestCase(SystemPropertyNames.DeviceDescription, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/18", new TestCase(SystemPropertyNames.HardwareVersion, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/20", new TestCase(SystemPropertyNames.BatteryStatus, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/3/0/21", new TestCase(SystemPropertyNames.MemoryTotal, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/5/0/3", new TestCase(SystemPropertyNames.FirmwareUpdateState, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/5/0/5", new TestCase(SystemPropertyNames.FirmwareUpdateResult, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/5/0/6", new TestCase(SystemPropertyNames.FirmwarePackageName, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/5/0/7", new TestCase(SystemPropertyNames.FirmwarePackageVersion, TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/10241/0/1", new TestCase("ConfigurationName", TestCase.TestType.Observe));
+            _ObserveTestCases.Add("/10241/0/2", new TestCase("ConfigurationValue", TestCase.TestType.Observe));
 
             Thread thread = new Thread(new ThreadStart(RunTestCases));
             thread.Start();
@@ -451,7 +487,7 @@
 
                 if (rs.Status == JobStatus.Completed)
                 {
-                    return getProperty(propertyName);
+                    return GetProperty(propertyName);
                 }
             }
 
