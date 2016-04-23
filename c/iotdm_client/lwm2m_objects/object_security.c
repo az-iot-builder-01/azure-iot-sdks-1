@@ -166,7 +166,7 @@ static uint8_t prv_security_read(uint16_t instanceId, int *numDataP, lwm2m_data_
     uint8_t              result;
     int                  i;
 
-    LogInfo("    security_read(%d)\n", instanceId);
+    // LogInfo("    security_read(%d)\n", instanceId);
     targetP = (security_instance_t *)lwm2m_list_find(objectP->instanceList, instanceId);
     if (NULL == targetP) return COAP_404_NOT_FOUND;
 
@@ -302,7 +302,7 @@ static uint8_t prv_security_write(uint16_t instanceId,
             LogError("    security_object->prv_write: %s ", dataArray + i);
             if (1 == lwm2m_data_decode_int(dataArray + i, &value))
             {
-                LogInfo("- %d\n", value);
+                // LogInfo("- %d\n", value);
                 if (value >= 0 && value <= 0xFFFF)
                 {
                     targetP->shortID = value;
@@ -451,11 +451,11 @@ void copy_security_object(lwm2m_object_t *objectDest, lwm2m_object_t *objectSrc)
 void display_security_object(lwm2m_object_t *object)
 {
 #ifdef WITH_LOGS
-    LogInfo("  /%u: Security object, instances:\r\n", object->objID);
+    // LogInfo("  /%u: Security object, instances:\r\n", object->objID);
     security_instance_t *instance = (security_instance_t *)object->instanceList;
     while (instance != NULL)
     {
-        LogInfo("    /%u/%u: instanceId: %u, uri: %s, isBootstrap: %s, shortId: %u, clientHoldOffTime: %u\r\n",
+        // LogInfo("    /%u/%u: instanceId: %u, uri: %s, isBootstrap: %s, shortId: %u, clientHoldOffTime: %u\r\n",
                 object->objID, instance->instanceId,
                 instance->instanceId, instance->uri, instance->isBootstrap ? "true" : "false",
                 instance->shortID, instance->clientHoldOffTime);

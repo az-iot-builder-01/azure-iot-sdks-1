@@ -42,7 +42,7 @@ IOTHUB_CLIENT_RESULT set_lwm2mserver_lifetime(uint16_t instanceId, int value)
     {
         if (obj->propval_lwm2mserver_lifetime != value)
         {
-            LogInfo("LWM2MServer_Lifetime being set to %d\r\n", value);
+            // LogInfo("LWM2MServer_Lifetime being set to %d\r\n", value);
             obj->propval_lwm2mserver_lifetime = value;
 
             obj->resourceUpdated[INDEX_LWM2MSERVER_LIFETIME] = (char)true;
@@ -63,7 +63,7 @@ IOTHUB_CLIENT_RESULT set_lwm2mserver_defaultminimumperiod(uint16_t instanceId, i
     {
         if (obj->propval_lwm2mserver_defaultminimumperiod != value)
         {
-            LogInfo("LWM2MServer_DefaultMinimumPeriod being set to %d\r\n", value);
+            // LogInfo("LWM2MServer_DefaultMinimumPeriod being set to %d\r\n", value);
             obj->propval_lwm2mserver_defaultminimumperiod = value;
 
             obj->resourceUpdated[INDEX_LWM2MSERVER_DEFAULTMINIMUMPERIOD] = (char)true;
@@ -84,7 +84,7 @@ IOTHUB_CLIENT_RESULT set_lwm2mserver_defaultmaximumperiod(uint16_t instanceId, i
     {
         if (obj->propval_lwm2mserver_defaultmaximumperiod != value)
         {
-            LogInfo("LWM2MServer_DefaultMaximumPeriod being set to %d\r\n", value);
+            // LogInfo("LWM2MServer_DefaultMaximumPeriod being set to %d\r\n", value);
             obj->propval_lwm2mserver_defaultmaximumperiod = value;
 
             obj->resourceUpdated[INDEX_LWM2MSERVER_DEFAULTMAXIMUMPERIOD] = (char)true;

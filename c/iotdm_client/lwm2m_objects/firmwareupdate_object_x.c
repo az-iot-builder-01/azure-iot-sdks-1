@@ -47,7 +47,7 @@ IOTHUB_CLIENT_RESULT set_firmwareupdate_state(uint16_t instanceId, int value)
     {
         if (obj->propval_firmwareupdate_state != value)
         {
-            LogInfo("FirmwareUpdate_State being set to %d\r\n", value);
+            // LogInfo("FirmwareUpdate_State being set to %d\r\n", value);
             obj->propval_firmwareupdate_state = value;
 
             obj->resourceUpdated[INDEX_FIRMWAREUPDATE_STATE] = (char)true;
@@ -68,7 +68,7 @@ IOTHUB_CLIENT_RESULT set_firmwareupdate_updateresult(uint16_t instanceId, int va
     {
         if (obj->propval_firmwareupdate_updateresult != value)
         {
-            LogInfo("FirmwareUpdate_UpdateResult being set to %d\r\n", value);
+            // LogInfo("FirmwareUpdate_UpdateResult being set to %d\r\n", value);
             obj->propval_firmwareupdate_updateresult = value;
 
             obj->resourceUpdated[INDEX_FIRMWAREUPDATE_UPDATERESULT] = (char)true;
@@ -89,7 +89,7 @@ IOTHUB_CLIENT_RESULT set_firmwareupdate_pkgname(uint16_t instanceId, char* value
     {
         if ((obj->propval_firmwareupdate_pkgname == NULL) || strcmp(obj->propval_firmwareupdate_pkgname, value))
         {
-            LogInfo("FirmwareUpdate_PkgName being set to [%s]\r\n", value);
+            // LogInfo("FirmwareUpdate_PkgName being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_firmwareupdate_pkgname);
             obj->propval_firmwareupdate_pkgname = lwm2m_strdup(value);
 
@@ -111,7 +111,7 @@ IOTHUB_CLIENT_RESULT set_firmwareupdate_pkgversion(uint16_t instanceId, char* va
     {
         if ((obj->propval_firmwareupdate_pkgversion == NULL) || strcmp(obj->propval_firmwareupdate_pkgversion, value))
         {
-            LogInfo("FirmwareUpdate_PkgVersion being set to [%s]\r\n", value);
+            // LogInfo("FirmwareUpdate_PkgVersion being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_firmwareupdate_pkgversion);
             obj->propval_firmwareupdate_pkgversion = lwm2m_strdup(value);
 

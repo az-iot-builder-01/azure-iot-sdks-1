@@ -187,7 +187,7 @@ IOTHUB_CHANNEL_HANDLE IoTHubClient_DM_Open(const char *connectionString, IOTHUB_
     else
     {
         CLIENT_DATA *cd = (CLIENT_DATA *)returnValue;
-        LogInfo("HostName: %s\r\n", cd->config.iotHubName);
+        // LogInfo("HostName: %s\r\n", cd->config.iotHubName);
     }
 
     return returnValue;
@@ -198,7 +198,7 @@ IOTHUB_CLIENT_RESULT IoTHubClient_DM_CreateDefaultObjects(IOTHUB_CHANNEL_HANDLE 
 {
     IOTHUB_CLIENT_RESULT result = IOTHUB_CLIENT_OK;
     
-    LogInfo("prepare the LWM2M Server Object\r\n");
+    // LogInfo("prepare the LWM2M Server Object\r\n");
     result = create_lwm2mserver_object(h, NULL);
     if (result != IOTHUB_CLIENT_OK)
     {
@@ -207,7 +207,7 @@ IOTHUB_CLIENT_RESULT IoTHubClient_DM_CreateDefaultObjects(IOTHUB_CHANNEL_HANDLE 
         return result;
     }
 
-    LogInfo("prepare the Device Object\r\n");
+    // LogInfo("prepare the Device Object\r\n");
     result = create_device_object(h, NULL);
     if (result != IOTHUB_CLIENT_OK)
     {
@@ -216,7 +216,7 @@ IOTHUB_CLIENT_RESULT IoTHubClient_DM_CreateDefaultObjects(IOTHUB_CHANNEL_HANDLE 
         return result;
     }
 
-    LogInfo("prepare the Firmware Update Object\r\n");
+    // LogInfo("prepare the Firmware Update Object\r\n");
     result = create_firmwareupdate_object(h, NULL);
     if (result != IOTHUB_CLIENT_OK)
     {
@@ -225,7 +225,7 @@ IOTHUB_CLIENT_RESULT IoTHubClient_DM_CreateDefaultObjects(IOTHUB_CHANNEL_HANDLE 
         return result;
     }
 
-    LogInfo("prepare the Config Object\r\n");
+    // LogInfo("prepare the Config Object\r\n");
     result = create_config_object(h, NULL);
     if (result != IOTHUB_CLIENT_OK)
     {
@@ -450,7 +450,7 @@ bool IoTHubClient_DM_DoWork(IOTHUB_CHANNEL_HANDLE h)
 
             default:
                 retValue = true;
-                LogInfo("Registration request is pending...\n");
+                // LogInfo("Registration request is pending...\n");
                 break;
         }
     }

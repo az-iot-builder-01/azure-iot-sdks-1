@@ -66,7 +66,7 @@ IOTHUB_CLIENT_RESULT set_device_manufacturer(uint16_t instanceId, char* value)
     {
         if ((obj->propval_device_manufacturer == NULL) || strcmp(obj->propval_device_manufacturer, value))
         {
-            LogInfo("Device_Manufacturer being set to [%s]\r\n", value);
+            // LogInfo("Device_Manufacturer being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_device_manufacturer);
             obj->propval_device_manufacturer = lwm2m_strdup(value);
 
@@ -88,7 +88,7 @@ IOTHUB_CLIENT_RESULT set_device_modelnumber(uint16_t instanceId, char* value)
     {
         if ((obj->propval_device_modelnumber == NULL) || strcmp(obj->propval_device_modelnumber, value))
         {
-            LogInfo("Device_ModelNumber being set to [%s]\r\n", value);
+            // LogInfo("Device_ModelNumber being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_device_modelnumber);
             obj->propval_device_modelnumber = lwm2m_strdup(value);
 
@@ -110,7 +110,7 @@ IOTHUB_CLIENT_RESULT set_device_serialnumber(uint16_t instanceId, char* value)
     {
         if ((obj->propval_device_serialnumber == NULL) || strcmp(obj->propval_device_serialnumber, value))
         {
-            LogInfo("Device_SerialNumber being set to [%s]\r\n", value);
+            // LogInfo("Device_SerialNumber being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_device_serialnumber);
             obj->propval_device_serialnumber = lwm2m_strdup(value);
 
@@ -132,7 +132,7 @@ IOTHUB_CLIENT_RESULT set_device_firmwareversion(uint16_t instanceId, char* value
     {
         if ((obj->propval_device_firmwareversion == NULL) || strcmp(obj->propval_device_firmwareversion, value))
         {
-            LogInfo("Device_FirmwareVersion being set to [%s]\r\n", value);
+            // LogInfo("Device_FirmwareVersion being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_device_firmwareversion);
             obj->propval_device_firmwareversion = lwm2m_strdup(value);
 
@@ -154,7 +154,7 @@ IOTHUB_CLIENT_RESULT set_device_batterylevel(uint16_t instanceId, int value)
     {
         if (obj->propval_device_batterylevel != value)
         {
-            LogInfo("Device_BatteryLevel being set to %d\r\n", value);
+            // LogInfo("Device_BatteryLevel being set to %d\r\n", value);
             obj->propval_device_batterylevel = value;
 
             obj->resourceUpdated[INDEX_DEVICE_BATTERYLEVEL] = (char)true;
@@ -175,7 +175,7 @@ IOTHUB_CLIENT_RESULT set_device_memoryfree(uint16_t instanceId, int value)
     {
         if (obj->propval_device_memoryfree != value)
         {
-            LogInfo("Device_MemoryFree being set to %d\r\n", value);
+            // LogInfo("Device_MemoryFree being set to %d\r\n", value);
             obj->propval_device_memoryfree = value;
 
             obj->resourceUpdated[INDEX_DEVICE_MEMORYFREE] = (char)true;
@@ -196,7 +196,7 @@ IOTHUB_CLIENT_RESULT set_device_currenttime(uint16_t instanceId, int value)
     {
         if (obj->propval_device_currenttime != value)
         {
-            LogInfo("Device_CurrentTime being set to %d\r\n", value);
+            // LogInfo("Device_CurrentTime being set to %d\r\n", value);
             obj->propval_device_currenttime = value;
 
             obj->resourceUpdated[INDEX_DEVICE_CURRENTTIME] = (char)true;
@@ -217,7 +217,7 @@ IOTHUB_CLIENT_RESULT set_device_utcoffset(uint16_t instanceId, char* value)
     {
         if ((obj->propval_device_utcoffset == NULL) || strcmp(obj->propval_device_utcoffset, value))
         {
-            LogInfo("Device_UtcOffset being set to [%s]\r\n", value);
+            // LogInfo("Device_UtcOffset being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_device_utcoffset);
             obj->propval_device_utcoffset = lwm2m_strdup(value);
 
@@ -239,7 +239,7 @@ IOTHUB_CLIENT_RESULT set_device_timezone(uint16_t instanceId, char* value)
     {
         if ((obj->propval_device_timezone == NULL) || strcmp(obj->propval_device_timezone, value))
         {
-            LogInfo("Device_Timezone being set to [%s]\r\n", value);
+            // LogInfo("Device_Timezone being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_device_timezone);
             obj->propval_device_timezone = lwm2m_strdup(value);
 
@@ -261,7 +261,7 @@ IOTHUB_CLIENT_RESULT set_device_devicetype(uint16_t instanceId, char* value)
     {
         if ((obj->propval_device_devicetype == NULL) || strcmp(obj->propval_device_devicetype, value))
         {
-            LogInfo("Device_DeviceType being set to [%s]\r\n", value);
+            // LogInfo("Device_DeviceType being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_device_devicetype);
             obj->propval_device_devicetype = lwm2m_strdup(value);
 
@@ -283,7 +283,7 @@ IOTHUB_CLIENT_RESULT set_device_hardwareversion(uint16_t instanceId, char* value
     {
         if ((obj->propval_device_hardwareversion == NULL) || strcmp(obj->propval_device_hardwareversion, value))
         {
-            LogInfo("Device_HardwareVersion being set to [%s]\r\n", value);
+            // LogInfo("Device_HardwareVersion being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_device_hardwareversion);
             obj->propval_device_hardwareversion = lwm2m_strdup(value);
 
@@ -305,7 +305,7 @@ IOTHUB_CLIENT_RESULT set_device_batterystatus(uint16_t instanceId, int value)
     {
         if (obj->propval_device_batterystatus != value)
         {
-            LogInfo("Device_BatteryStatus being set to %d\r\n", value);
+            // LogInfo("Device_BatteryStatus being set to %d\r\n", value);
             obj->propval_device_batterystatus = value;
 
             obj->resourceUpdated[INDEX_DEVICE_BATTERYSTATUS] = (char)true;
@@ -326,7 +326,7 @@ IOTHUB_CLIENT_RESULT set_device_memorytotal(uint16_t instanceId, int value)
     {
         if (obj->propval_device_memorytotal != value)
         {
-            LogInfo("Device_MemoryTotal being set to %d\r\n", value);
+            // LogInfo("Device_MemoryTotal being set to %d\r\n", value);
             obj->propval_device_memorytotal = value;
 
             obj->resourceUpdated[INDEX_DEVICE_MEMORYTOTAL] = (char)true;

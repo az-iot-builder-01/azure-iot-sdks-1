@@ -102,9 +102,9 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    LogInfo("IoTHubClientHandle: %p\r\n", IoTHubChannel);
+    // LogInfo("IoTHubClientHandle: %p\r\n", IoTHubChannel);
 
-    LogInfo("prepare LWM2M objects");
+    // LogInfo("prepare LWM2M objects");
     if (IOTHUB_CLIENT_OK != IoTHubClient_DM_CreateDefaultObjects(IoTHubChannel))
     {
         LogError("failure to create LWM2M objects for client: %p\r\n", IoTHubChannel);
@@ -171,9 +171,9 @@ void update_firmware_udpate_progress(SimulatedDeviceState *sds)
         // nothing to do
         break;
     case APP_UPDATE_STATE_URL_RECEIVED:
-        LogInfo("** firmware download started\r\n");
+        // LogInfo("** firmware download started\r\n");
         sds->DownloadStartTime = time(NULL);
-        LogInfo("** %s - > APP_UPDATE_STATE_DOWNLOAD_IN_PROGRESS\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, sds->AppUpdateState));
+        // LogInfo("** %s - > APP_UPDATE_STATE_DOWNLOAD_IN_PROGRESS\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, sds->AppUpdateState));
         sds->AppUpdateState = APP_UPDATE_STATE_DOWNLOAD_IN_PROGRESS;
         set_firmwareupdate_state(0, LWM2M_UPDATE_STATE_DOWNLOADING_IMAGE);
         set_firmwareupdate_updateresult(0, LWM2M_UPDATE_RESULT_DEFAULT);
@@ -181,9 +181,9 @@ void update_firmware_udpate_progress(SimulatedDeviceState *sds)
     case APP_UPDATE_STATE_DOWNLOAD_IN_PROGRESS:
         if ((time(NULL) - sds->DownloadStartTime) > DOWNLOAD_TIME_S)
         {
-            LogInfo("** firmware download completed\r\n");
+            // LogInfo("** firmware download completed\r\n");
             set_firmwareupdate_state(0, LWM2M_UPDATE_STATE_IMAGE_DOWNLOADED);
-            LogInfo("** %s - > APP_UPDATE_STATE_DOWNLOAD_COMPLETE\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, sds->AppUpdateState));
+            // LogInfo("** %s - > APP_UPDATE_STATE_DOWNLOAD_COMPLETE\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, sds->AppUpdateState));
             sds->AppUpdateState = APP_UPDATE_STATE_DOWNLOAD_COMPLETE;
         }
         break;
@@ -191,18 +191,18 @@ void update_firmware_udpate_progress(SimulatedDeviceState *sds)
         // Nothing to do
         break;
     case APP_UPDATE_STATE_UPDATE_COMMAND_RECEIVED:
-        LogInfo("** firmware update started\r\n");
+        // LogInfo("** firmware update started\r\n");
         sds->UpdateStartTime = time(NULL);
-        LogInfo("** %s - > APP_UPDATE_STATE_UPDATE_IN_PROGRESS\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, sds->AppUpdateState));
+        // LogInfo("** %s - > APP_UPDATE_STATE_UPDATE_IN_PROGRESS\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, sds->AppUpdateState));
         sds->AppUpdateState = APP_UPDATE_STATE_UPDATE_IN_PROGRESS;
         set_firmwareupdate_state(0, LWM2M_UPDATE_STATE_NONE);
         break;
     case APP_UPDATE_STATE_UPDATE_IN_PROGRESS:
         if ((time(NULL) - sds->UpdateStartTime) >= FLASH_TIME_S)
         {
-            LogInfo("** firmware update completed\r\n");
+            // LogInfo("** firmware update completed\r\n");
             set_firmwareupdate_updateresult(0, LWM2M_UPDATE_RESULT_UPDATE_SUCCESSFUL);
-            LogInfo("** %s - > APP_UPDATE_STATE_UPDATE_SUCCESSFUL\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, sds->AppUpdateState));
+            // LogInfo("** %s - > APP_UPDATE_STATE_UPDATE_SUCCESSFUL\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, sds->AppUpdateState));
             sds->AppUpdateState = APP_UPDATE_STATE_UPDATE_SUCCESSFUL;
 			set_device_firmwareversion(0, target_version);
         }
@@ -237,8 +237,8 @@ IOTHUB_CLIENT_RESULT start_simulated_firmware_download(object_firmwareupdate *ob
     uri = obj->propval_firmwareupdate_packageuri;
     if (uri == NULL || *uri == 0)
     {
-        LogInfo("** Empty URI received.  Resetting state machine\r\n");
-        LogInfo("** %s - > APP_UPDATE_STATE_IDLE\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, g_sds->AppUpdateState));
+        // LogInfo("** Empty URI received.  Resetting state machine\r\n");
+        // LogInfo("** %s - > APP_UPDATE_STATE_IDLE\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, g_sds->AppUpdateState));
         g_sds->AppUpdateState = APP_UPDATE_STATE_IDLE;
         set_firmwareupdate_state(0, LWM2M_UPDATE_STATE_NONE);
         set_firmwareupdate_updateresult(0, LWM2M_UPDATE_RESULT_DEFAULT);
@@ -246,8 +246,8 @@ IOTHUB_CLIENT_RESULT start_simulated_firmware_download(object_firmwareupdate *ob
     }
     else
     {
-        LogInfo("** URI received from server.  Getting ready to download\r\n");
-        LogInfo("** %s - > APP_UPDATE_STATE_URL_RECEIVED\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, g_sds->AppUpdateState));
+        // LogInfo("** URI received from server.  Getting ready to download\r\n");
+        // LogInfo("** %s - > APP_UPDATE_STATE_URL_RECEIVED\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, g_sds->AppUpdateState));
         g_sds->AppUpdateState = APP_UPDATE_STATE_URL_RECEIVED;
         return IOTHUB_CLIENT_OK;
     }
@@ -255,16 +255,16 @@ IOTHUB_CLIENT_RESULT start_simulated_firmware_download(object_firmwareupdate *ob
 
 IOTHUB_CLIENT_RESULT start_simulated_firmware_update(object_firmwareupdate *obj)
 {
-    LogInfo("** firmware update request posted\r\n");
+    // LogInfo("** firmware update request posted\r\n");
     if (g_sds->AppUpdateState == APP_UPDATE_STATE_DOWNLOAD_COMPLETE)
     {
-        LogInfo("** %s - > APP_UPDATE_STATE_UPDATE_COMMAND_RECEIVED\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, g_sds->AppUpdateState));
+        // LogInfo("** %s - > APP_UPDATE_STATE_UPDATE_COMMAND_RECEIVED\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, g_sds->AppUpdateState));
         g_sds->AppUpdateState = APP_UPDATE_STATE_UPDATE_COMMAND_RECEIVED;
         return IOTHUB_CLIENT_OK;
     }
     else
     {
-        LogInfo("** returning failure. Invalid state -- state = %s\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, g_sds->AppUpdateState));
+        // LogInfo("** returning failure. Invalid state -- state = %s\r\n", ENUM_TO_STRING(APP_UPDATE_STATE, g_sds->AppUpdateState));
         return IOTHUB_CLIENT_INVALID_ARG;
     }
 }

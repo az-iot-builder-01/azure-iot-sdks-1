@@ -87,7 +87,7 @@ void iotdmc_handle_registration_reply(lwm2m_transaction_t *transacP, void *messa
 
                 targetP->location = coap_get_multi_option_as_string(packet->location_path);
 
-                LogInfo("    => REGISTERED(%s)\r\n", targetP->location ? targetP->location : "");
+                 LogInfo("    => REGISTERED(%s)\r\n", targetP->location ? targetP->location : "");
             }
 
             else
@@ -151,7 +151,7 @@ int dm_io_open(IO_OPEN_COMPLETE_CONTEXT *openContext)
             return 0;
         }
 
-        LogInfo("Retry open in %d seconds\n", retry);
+        // LogInfo("Retry open in %d seconds\n", retry);
         ThreadAPI_Sleep(retry * 1000);
         retry *= 2;
     }
@@ -329,7 +329,7 @@ IOTHUB_CLIENT_RESULT send_register_transaction(CLIENT_DATA* cd)
                 lwm2m_context_t *contextP = cd->session;
                 lwm2m_server_t  *server = contextP->serverList;
 
-                LogInfo("    Connect to:'%s'\n", cd->config.iotHubName);
+                // LogInfo("    Connect to:'%s'\n", cd->config.iotHubName);
 
                 server->sessionH = cd->ioHandle;
                 lwm2m_transaction_t *transaction = transaction_new(COAP_TYPE_CON, COAP_POST, NULL, NULL, contextP->nextMID++, 4, NULL, ENDPOINT_SERVER, (void *)server);
@@ -443,7 +443,7 @@ void on_bytes_received(void *context, const unsigned char *buffer, size_t size)
                 );
             if (toCopy == 0)
             {
-                LogInfo(" on_bytes_received buffer argument is larger than destination");
+                // LogInfo(" on_bytes_received buffer argument is larger than destination");
                 size = 0;
                 reset_input_buffer(client);
             }
@@ -457,7 +457,7 @@ void on_bytes_received(void *context, const unsigned char *buffer, size_t size)
 
                 if ((client->input.available - SIZEOF_MESSAGE_LENGTH_FIELD) == client->input.length)
                 {
-                    LogInfo(" on_bytes_received - msgLength: %d\n", client->input.length);
+                    // LogInfo(" on_bytes_received - msgLength: %d\n", client->input.length);
                     lwm2m_handle_packet(client->session, &(client->input.buffer[SIZEOF_MESSAGE_LENGTH_FIELD]), client->input.length, client->ioHandle);
                     reset_input_buffer(client);
                 }
@@ -531,7 +531,7 @@ uint8_t lwm2m_buffer_send(void *context, uint8_t *buffer, size_t length, void *u
 {
     XIO_HANDLE io_handle = (XIO_HANDLE)context;
 
-    LogInfo("    Sending %zd bytes\n", length);
+    // LogInfo("    Sending %zd bytes\n", length);
 #ifdef WITH_LOGS
     output_buffer(stdout, buffer, length, 2);
 #endif

@@ -41,7 +41,7 @@ IOTHUB_CLIENT_RESULT set_config_name(uint16_t instanceId, char* value)
     {
         if ((obj->propval_config_name == NULL) || strcmp(obj->propval_config_name, value))
         {
-            LogInfo("Config_Name being set to [%s]\r\n", value);
+            // LogInfo("Config_Name being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_config_name);
             obj->propval_config_name = lwm2m_strdup(value);
 
@@ -63,7 +63,7 @@ IOTHUB_CLIENT_RESULT set_config_value(uint16_t instanceId, char* value)
     {
         if ((obj->propval_config_value == NULL) || strcmp(obj->propval_config_value, value))
         {
-            LogInfo("Config_Value being set to [%s]\r\n", value);
+            // LogInfo("Config_Value being set to [%s]\r\n", value);
             lwm2m_free(obj->propval_config_value);
             obj->propval_config_value = lwm2m_strdup(value);
 
