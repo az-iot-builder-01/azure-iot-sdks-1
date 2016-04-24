@@ -217,7 +217,7 @@ IOTHUB_CLIENT_RESULT update_property_values(SimulatedDeviceState *sds)
 {
     IOTHUB_CLIENT_RESULT result = IOTHUB_CLIENT_OK;
 
-    printf(".");
+    //printf(".");
     update_battery_level(sds);
     update_firmware_udpate_progress(sds);
 

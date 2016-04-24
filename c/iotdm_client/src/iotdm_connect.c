@@ -87,7 +87,7 @@ void iotdmc_handle_registration_reply(lwm2m_transaction_t *transacP, void *messa
 
                 targetP->location = coap_get_multi_option_as_string(packet->location_path);
 
-                 LogInfo("    => REGISTERED(%s)\r\n", targetP->location ? targetP->location : "");
+                 LogInfo("  << REGISTERED %s", targetP->location ? targetP->location : "");
             }
 
             else
@@ -352,6 +352,7 @@ IOTHUB_CLIENT_RESULT send_register_transaction(CLIENT_DATA* cd)
                     contextP->transactionList = (lwm2m_transaction_t *)LWM2M_LIST_ADD(contextP->transactionList, transaction);
                     if (transaction_send(contextP, transaction) == 0)
                     {
+                        LogInfo(">> REGISTER %s", cd->config.deviceId);
                         server->status = STATE_REG_PENDING;
                         result = IOTHUB_CLIENT_OK;
                     }
