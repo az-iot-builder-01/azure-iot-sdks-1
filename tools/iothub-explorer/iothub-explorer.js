@@ -581,6 +581,8 @@ function usage() {
     '{yellow}Device management commands{/yellow}',
     '  {white}[<connection-string>] {green}get-job{/green} <job-id>{/white}',
     '    {grey}Displays information about the given job.{/grey}',
+    '  {white}[<connection-string>] {green}query-jobs{/green} <query-json>{/white}',
+    '    {grey}Displays information about jobs matching the given query.{/grey}',
     '  {white}[<connection-string>] {green}read{/green} <device-ids> <device-properties> [--async]{/white}',
     '    {grey}Reads and displays properties, given as a comma-delimted list of names, from one or more devices (aka "deep read").{/grey}',
     '  {white}[<connection-string>] {green}write{/green} <device-ids> <device-properties> [--async]{/white}',
