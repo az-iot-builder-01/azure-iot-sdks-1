@@ -296,6 +296,26 @@ else if (command === 'get-job') {
       printResult(job);
     });
 }
+else if (command === 'query-jobs') {
+  if (!arg1) inputError('No query given');
+  var query;
+  try {
+    query = JSON.parse(arg1);
+  }
+  catch (e) {
+    if (e instanceof SyntaxError) inputError('Query isn\'t valid JSON');
+    else throw e;
+  }
+  
+  var jobClient = connString ? 
+    JobClient.fromConnectionString(connString) :
+    JobClient.fromSharedAccessSignature(sas.toString());
+    
+    jobClient.queryJobHistory(query, function (err, result) {
+      if (err) serviceError(err);
+      printResult(result);
+    });
+}
 else if (command === 'read') {
   if (!arg1) inputError('No device IDs given');
   if (!arg2) inputError('No device properties given');
