@@ -44,6 +44,7 @@ var expected = {
   'connection-string': Boolean,
   'duration': Count,
   'display': String,
+  'max-results': Count,
   'messages': Count,
   'raw': Boolean
 };
@@ -172,6 +173,20 @@ else if (command === 'get') {
   registry.get(arg1, function (err, device) {
     if (err) serviceError(err);
     else printDevice(device);
+  });
+}
+else if (command === 'query-tags') {
+  if (!arg1) inputError('No tags given');
+  var tags = arrayFromCommaDelimitedList(arg1);
+  var maxResults = parsed['max-results'] || 100;
+  var registry = connString ? Registry.fromConnectionString(connString) : Registry.fromSharedAccessSignature(sas.toString());
+  registry.queryDevicesByTags(tags, maxResults, function (err, devices) {
+    if (err) serviceError(err);
+    else {
+      devices.forEach(function (device) {
+        printDevice(device, true);
+      });
+    }
   });
 }
 else if (command === 'delete') {
@@ -517,7 +532,7 @@ function connectionString(device) {
     'SharedAccessKey=' + device.authentication.symmetricKey.primaryKey;
 }
 
-function printDevice(device) {
+function printDevice(device, noConnectionString) {
   var filtered = {};
   if (parsed.display) {
     var props = arrayFromCommaDelimitedList(parsed.display);
@@ -546,7 +561,8 @@ function printDevice(device) {
   }
 
   var result = [filtered];
-  if (parsed['connection-string']) {
+  
+  if (!noConnectionString && parsed['connection-string']) {
     result.push({ connectionString: connectionString(device) });
   }
 
@@ -581,6 +597,10 @@ function usage() {
     '  {white}[<connection-string>] {green}get{/green} <device-id> [--display="<property>,..."] [--connection-string]{/white}',
     '    {grey}Displays the given device twin.',
     '    Can optionally reduce output to selected properties and/or the connection string.{/grey}',
+    '  {white}[<connection-string>] {green}query-tags{/green} <tags> [--max-results=<n>] [--display="<property>,..."] [--connection-string]{/white}',
+    '    {grey}Displays the first <n> device twins which match all given tags.',
+    '    <tags> is comma-delimited. <n> defaults to 100 if --max-results is omitted.',
+    '    --connection-string is currently ignored.{/grey}',
     '  {white}[<connection-string>] {green}create{/green} <device-id|device-json> [--display="<property>,..."] [--connection-string]{/white}',
     '    {grey}Creates a device twin on the IoT Hub. Also displays the twin as if you called{/grey} {green}get{/green}{grey}.',
     '    Can optionally reduce output to selected properties and/or the connection string.{/grey}',
