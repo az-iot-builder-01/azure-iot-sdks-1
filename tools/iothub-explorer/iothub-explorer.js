@@ -175,6 +175,18 @@ else if (command === 'get') {
     else printDevice(device);
   });
 }
+else if (command === 'query') {
+  if (!arg1) inputError('No query given');
+  var registry = connString ? Registry.fromConnectionString(connString) : Registry.fromSharedAccessSignature(sas.toString());
+  registry.queryDevices(JSON.parse(arg1), function (err, devices) {
+    if (err) serviceError(err);
+    else {
+      devices.forEach(function (device) {
+        printDevice(device);
+      });
+    }
+  });
+}
 else if (command === 'query-tags') {
   if (!arg1) inputError('No tags given');
   var tags = arrayFromCommaDelimitedList(arg1);
@@ -597,6 +609,8 @@ function usage() {
     '  {white}[<connection-string>] {green}get{/green} <device-id> [--display="<property>,..."] [--connection-string]{/white}',
     '    {grey}Displays the given device twin.',
     '    Can optionally reduce output to selected properties and/or the connection string.{/grey}',
+    '  {white}[<connection-string>] {green}query{/green} <query-json>{/white}',
+    '    {grey}Displays information about device twins matching the given query.{/grey}',
     '  {white}[<connection-string>] {green}query-tags{/green} <tags> [--max-results=<n>] [--display="<property>,..."] [--connection-string]{/white}',
     '    {grey}Displays the first <n> device twins which match all given tags.',
     '    <tags> is comma-delimited. <n> defaults to 100 if --max-results is omitted.',
