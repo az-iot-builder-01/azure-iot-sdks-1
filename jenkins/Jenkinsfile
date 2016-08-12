@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-def repoUrl = 'https://github.com/damonbarry/azure-iot-sdks.git'
+def repoUrl = 'https://github.com/damonbarry/azure-iot-sdks-1.git'
 def repoName =  'origin'
 def branchName = 'develop'
 
