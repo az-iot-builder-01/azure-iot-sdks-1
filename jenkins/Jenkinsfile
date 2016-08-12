@@ -52,3 +52,4 @@ node {
         sh 'jenkins/jenkins_push.sh'
     }
 }
+
