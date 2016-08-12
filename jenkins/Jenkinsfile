@@ -1,19 +1,13 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 
-def repoUrl = 'https://github.com/damonbarry/azure-iot-sdks-1.git'
 def repoName =  'origin'
-def branchName = 'develop'
 
 node {
-    echo SOURCE_BRANCH
-    echo DESTINATION_BRANCH
-    echo REPO_URI
-
     stage 'Checkout'
     checkout([
         $class: 'GitSCM',
-        branches: [[name: "${repoName}/${branchName}"]],
+        branches: [[name: "${repoName}/${SOURCE_BRANCH}"]],
         doGenerateSubmoduleConfigurations: false,
         extensions: [
             [$class: 'WipeWorkspace'],
@@ -21,7 +15,7 @@ node {
             [$class: 'SubmoduleOption', disableSubmodules: false, recursiveSubmodules: true, reference: '', trackingSubmodules: false]
         ],
         submoduleCfg: [],
-        userRemoteConfigs: [[name: repoName, url: repoUrl]]
+        userRemoteConfigs: [[name: repoName, url: REPO_URI]]
     ])
 
     stage 'Build Java'
