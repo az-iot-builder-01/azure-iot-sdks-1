@@ -6,6 +6,10 @@ def repoName =  'origin'
 def branchName = 'develop'
 
 node {
+    echo SOURCE_BRANCH
+    echo DESTINATION_BRANCH
+    echo REPO_URI
+
     stage 'Checkout'
     checkout([
         $class: 'GitSCM',
