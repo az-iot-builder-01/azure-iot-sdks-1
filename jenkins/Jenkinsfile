@@ -46,9 +46,9 @@ node {
     withCredentials([[
         $class: 'UsernamePasswordMultiBinding',
         credentialsId: 'cf1ac13d-fc43-450b-9d4d-8352086aa522',
-        usernameVariable: 'GIT_USER',
-        passwordVariable: 'GIT_PASS']])
+        usernameVariable: 'GITUSR',
+        passwordVariable: 'GITPASSWD']])
     {
-        sh('git push https://$GIT_USER:$GIT_PASS@$REPO_URI --tags')
+        sh 'jenkins/jenkins_push.sh'
     }
 }
