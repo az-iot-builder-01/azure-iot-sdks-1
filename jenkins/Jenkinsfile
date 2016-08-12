@@ -5,18 +5,29 @@ def repoName =  'origin'
 
 node {
     stage 'Checkout'
-    checkout([
-        $class: 'GitSCM',
-        branches: [[name: "${repoName}/${SOURCE_BRANCH}"]],
-        doGenerateSubmoduleConfigurations: false,
-        extensions: [
-            [$class: 'WipeWorkspace'],
-            [$class: 'PruneStaleBranch'],
-            [$class: 'SubmoduleOption', disableSubmodules: false, recursiveSubmodules: true, reference: '', trackingSubmodules: false]
-        ],
-        submoduleCfg: [],
-        userRemoteConfigs: [[name: repoName, url: REPO_URI]]
-    ])
+    checkout(
+        changelog: true,
+        poll: true,
+        scm: [
+            $class: 'GitSCM',
+            branches: [[name: "${repoName}/${SOURCE_BRANCH}"]],
+            doGenerateSubmoduleConfigurations: false,
+            extensions: [
+                [$class: 'WipeWorkspace'],
+                [$class: 'PruneStaleBranch'],
+                [$class: 'SubmoduleOption', disableSubmodules: false, recursiveSubmodules: true, reference: '', trackingSubmodules: false],
+                [$class: 'PreBuildMerge', options: [
+                    fastForwardMode: 'FF',
+                    mergeRemote: 'origin',
+                    mergeStrategy: 'default',
+                    mergeTarget: DESTINATION_BRANCH
+                ]], 
+                [$class: 'AuthorInChangelog']
+            ],
+            submoduleCfg: [],
+            userRemoteConfigs: [[name: repoName, url: REPO_URI]]
+        ]
+    )
 
     stage 'Build Java'
     withCredentials([
