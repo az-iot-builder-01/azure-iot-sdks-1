@@ -21,20 +21,10 @@ node {
     ])
 
     stage 'Build Java'
-    withEnv([
-        'IOTHUB_DEVICE_ID=aziotclb-ubu01-ga',
-        'IOTHUB_EVENTHUB_CONSUMER_GROUP=e2e-tests',
-        'IOTHUB_EVENTHUB_LISTEN_NAME=iot-sdks-test',
-        'IOTHUB_NAME=iot-sdks-test',
-        'IOTHUB_POLICY_NAME=iothubowner',
-        'IOTHUB_SUFFIX=azure-devices.net'])
+    withCredentials([
+        [$class: 'StringBinding', credentialsId: '05294bb0-93c3-4f01-a258-666586a3917c', variable: 'IOTHUB_CONNECTION_STRING'],
+        [$class: 'StringBinding', credentialsId: '4a97c867-c403-4c77-839b-5eabf39feafe', variable: 'STORAGE_ACCOUNT_CONNECTION_STRING']])
     {
-        withCredentials([
-            [$class: 'StringBinding', credentialsId: '05294bb0-93c3-4f01-a258-666586a3917c', variable: 'IOTHUB_CONNECTION_STRING'],
-            [$class: 'StringBinding', credentialsId: '954cb13d-66df-4c8e-9dca-1ae25b9a4db8', variable: 'IOTHUB_DEVICE_KEY'],
-            [$class: 'StringBinding', credentialsId: '4a97c867-c403-4c77-839b-5eabf39feafe', variable: 'STORAGE_ACCOUNT_CONNECTION_STRING']])
-        {
-            sh 'jenkins/linux_java.sh'
-        }
+        sh 'jenkins/linux_java.sh'
     }
 }
